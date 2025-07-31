@@ -17,6 +17,7 @@ import base64
 from docx import Document
 import fitz  # PyMuPDF for better PDF handling
 from few_shot_examples import FEW_SHOT_EXAMPLES, PARSING_EXAMPLES, MATCHING_PROMPTS
+from explainable_matcher import ExplainableAIMatcher, ResumeHighlighter
 
 # Load environment variables
 load_dotenv()
@@ -38,6 +39,8 @@ if 'match_results' not in st.session_state:
     st.session_state.match_results = None
 if 'enhanced_resume' not in st.session_state:
     st.session_state.enhanced_resume = None
+if 'explainable_results' not in st.session_state:
+    st.session_state.explainable_results = None
 
 class AdvancedResumeParser:
     """Advanced AI-powered resume parser with few-shot learning"""
@@ -746,6 +749,7 @@ def main():
     # Initialize advanced components
     parser = AdvancedResumeParser()
     ai_matcher = AdvancedAIMatcher()
+    explainable_matcher = ExplainableAIMatcher()
     pdf_generator = PDFGenerator()
     
     # Create tabs for better organization
@@ -863,26 +867,65 @@ def main():
                 st.session_state.job_description = jd_text
     
     with tab3:
-        st.markdown('<h2 class="sub-header">🤖 AI Matching & Analysis</h2>', unsafe_allow_html=True)
+        st.markdown('<h2 class="sub-header">🤖 AI Analysis</h2>', unsafe_allow_html=True)
+        
+        # Add explainable matching option
+        analysis_type = st.radio(
+            "Choose analysis type:",
+            ["Standard Matching", "Explainable AI Analysis"],
+            help="Standard: Basic match score. Explainable: Detailed phrase-level analysis with justifications."
+        )
         
         if st.session_state.resume_data and st.session_state.job_description:
-            if st.button("🎯 Start Advanced AI Matching", type="primary", use_container_width=True):
+            if st.button("🎯 Start AI Analysis", type="primary", use_container_width=True):
                 with st.spinner("Performing comprehensive AI analysis..."):
-                    # Perform matching
-                    match_results = ai_matcher.match_resume_to_job(
-                        st.session_state.resume_data,
-                        st.session_state.job_description
-                    )
-                    st.session_state.match_results = match_results
+                    if analysis_type == "Explainable AI Analysis":
+                        # Get raw resume text for explainable analysis
+                        resume_text = ""
+                        if st.session_state.resume_data:
+                            # Reconstruct resume text from parsed data
+                            resume_text = f"""
+                            Name: {st.session_state.resume_data.get('name', '')}
+                            Email: {st.session_state.resume_data.get('email', '')}
+                            Phone: {st.session_state.resume_data.get('phone', '')}
+                            
+                            Skills: {', '.join(st.session_state.resume_data.get('skills', []))}
+                            
+                            Experience:
+                            {chr(10).join([f"- {exp.get('role', '')} at {exp.get('company', '')} ({exp.get('duration', '')})" for exp in st.session_state.resume_data.get('experience', [])])}
+                            
+                            Education:
+                            {chr(10).join([f"- {edu.get('degree', '')} from {edu.get('institution', '')}" for edu in st.session_state.resume_data.get('education', [])])}
+                            """
+                        
+                        # Perform explainable matching
+                        explainable_result = explainable_matcher.match_with_explanations(
+                            resume_text,
+                            st.session_state.job_description
+                        )
+                        
+                        if explainable_result:
+                            st.session_state.explainable_results = explainable_result
+                            st.success("✅ Explainable analysis complete!")
+                        else:
+                            st.error("❌ Explainable analysis failed")
+                    else:
+                        # Standard matching
+                        match_results = ai_matcher.match_resume_to_job(
+                            st.session_state.resume_data,
+                            st.session_state.job_description
+                        )
+                        st.session_state.match_results = match_results
+                        
+                        # Generate enhancement suggestions
+                        enhanced_resume = ai_matcher.enhance_resume(
+                            st.session_state.resume_data,
+                            st.session_state.job_description
+                        )
+                        st.session_state.enhanced_resume = enhanced_resume
+                        
+                        st.success("✅ Standard analysis complete!")
                     
-                    # Generate enhancement suggestions
-                    enhanced_resume = ai_matcher.enhance_resume(
-                        st.session_state.resume_data,
-                        st.session_state.job_description
-                    )
-                    st.session_state.enhanced_resume = enhanced_resume
-                    
-                    st.success("✅ Analysis complete!")
                     st.rerun()
         
         # Results Section
@@ -1088,6 +1131,84 @@ def main():
                     st.markdown('<h4 style="color: #17a2b8;">📝 Formatting Suggestions</h4>', unsafe_allow_html=True)
                     for suggestion in enhanced['formatting_suggestions']:
                         st.markdown(f'<div class="metric-card">📝 {suggestion}</div>', unsafe_allow_html=True)
+        
+        # Explainable Results Section
+        if st.session_state.explainable_results:
+            explainable_result = st.session_state.explainable_results
+            
+            st.markdown("<br>", unsafe_allow_html=True)
+            st.markdown('<h3 style="color: #1f77b4;">🔍 Explainable AI Analysis</h3>', unsafe_allow_html=True)
+            
+            # Add CSS for highlighting
+            st.markdown(ResumeHighlighter.create_highlight_css(), unsafe_allow_html=True)
+            
+            # Main score display
+            col1, col2 = st.columns([1, 2])
+            
+            with col1:
+                st.markdown(f"""
+                <div class="metric-card" style="text-align: center;">
+                    <h2 style="color: #1f77b4; margin: 0;">{explainable_result.match_score}%</h2>
+                    <p style="margin: 0; font-weight: bold;">Explainable Match Score</p>
+                </div>
+                """, unsafe_allow_html=True)
+                
+                if explainable_result.summary:
+                    st.markdown(f"""
+                    <div class="metric-card">
+                        <strong>AI Summary:</strong><br>
+                        {explainable_result.summary}
+                    </div>
+                    """, unsafe_allow_html=True)
+            
+            with col2:
+                # Display explanations
+                ResumeHighlighter.display_explanations(explainable_result.explanations)
+            
+            # Suggestions and improvements
+            if explainable_result.suggestions:
+                st.markdown('<h4 style="color: #17a2b8;">💡 Improvement Suggestions</h4>', unsafe_allow_html=True)
+                for suggestion in explainable_result.suggestions:
+                    st.markdown(f'<div class="metric-card">💡 {suggestion}</div>', unsafe_allow_html=True)
+            
+            # Interactive resume highlighting
+            st.markdown('<h4 style="color: #6f42c1;">📄 Highlighted Resume Analysis</h4>', unsafe_allow_html=True)
+            st.markdown("""
+            <div style="background-color: #f8f9fa; padding: 15px; border-radius: 5px; border: 1px solid #dee2e6;">
+                <p><strong>Legend:</strong></p>
+                <ul>
+                    <li><span style="background-color: #d4edda; color: #155724; padding: 2px 4px; border-radius: 3px;">Green</span> = Strong positive match</li>
+                    <li><span style="background-color: #fff3cd; color: #856404; padding: 2px 4px; border-radius: 3px;">Yellow</span> = Neutral/minimal impact</li>
+                    <li><span style="background-color: #f8d7da; color: #721c24; padding: 2px 4px; border-radius: 3px; text-decoration: line-through;">Red</span> = Negative mismatch</li>
+                </ul>
+                <p><em>Hover over highlighted phrases to see AI justifications.</em></p>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            # Reconstruct and highlight resume text
+            if st.session_state.resume_data:
+                resume_text = f"""
+                <strong>Name:</strong> {st.session_state.resume_data.get('name', '')}<br>
+                <strong>Email:</strong> {st.session_state.resume_data.get('email', '')}<br>
+                <strong>Phone:</strong> {st.session_state.resume_data.get('phone', '')}<br><br>
+                
+                <strong>Skills:</strong> {', '.join(st.session_state.resume_data.get('skills', []))}<br><br>
+                
+                <strong>Experience:</strong><br>
+                {chr(10).join([f"• {exp.get('role', '')} at {exp.get('company', '')} ({exp.get('duration', '')})" for exp in st.session_state.resume_data.get('experience', [])])}<br><br>
+                
+                <strong>Education:</strong><br>
+                {chr(10).join([f"• {edu.get('degree', '')} from {edu.get('institution', '')}" for edu in st.session_state.resume_data.get('education', [])])}
+                """
+                
+                # Highlight the resume text
+                highlighted_resume = explainable_matcher.highlight_resume_text(resume_text, explainable_result.explanations)
+                
+                st.markdown(f"""
+                <div style="background-color: white; padding: 20px; border-radius: 5px; border: 1px solid #dee2e6; font-family: 'Courier New', monospace; line-height: 1.6;">
+                    {highlighted_resume}
+                </div>
+                """, unsafe_allow_html=True)
             
             # Download Report
             st.markdown("<br>", unsafe_allow_html=True)
