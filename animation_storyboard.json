@@ -1,0 +1,292 @@
+{
+  "animation_name": "Animated PDF Scanner",
+  "duration_ms": 10500,
+  "pdf_dimensions": {
+    "width": 800,
+    "height": 600
+  },
+  "storyboard": [
+    {
+      "timeline": 0,
+      "bubble_position": { "x": 50, "y": 50 },
+      "animation_action": "move",
+      "description": "Initial bubble position at top-left"
+    },
+    {
+      "timeline": 500,
+      "bubble_position": { "x": 120, "y": 80 },
+      "highlight_area": { "x": 100, "y": 70, "width": 200, "height": 30 },
+      "tag_text": "Name Detected",
+      "animation_action": "pause",
+      "section_type": "name",
+      "description": "Bubble pauses on name section, highlighting begins"
+    },
+    {
+      "timeline": 1000,
+      "bubble_position": { "x": 120, "y": 80 },
+      "highlight_area": { "x": 100, "y": 70, "width": 200, "height": 30 },
+      "tag_text": "Name Detected",
+      "animation_action": "glow",
+      "section_type": "name",
+      "description": "Name section glows with enhanced highlight effect"
+    },
+    {
+      "timeline": 1500,
+      "bubble_position": { "x": 120, "y": 80 },
+      "tag_text": "Name Detected",
+      "animation_action": "tag_popout",
+      "section_type": "name",
+      "description": "Tag pops out from bubble and floats toward analysis panel"
+    },
+    {
+      "timeline": 2000,
+      "bubble_position": { "x": 120, "y": 80 },
+      "animation_action": "beam_transfer",
+      "section_type": "name",
+      "description": "Beam animation shows data transfer to analysis panel"
+    },
+    {
+      "timeline": 2500,
+      "bubble_position": { "x": 200, "y": 120 },
+      "highlight_area": { "x": 180, "y": 110, "width": 250, "height": 40 },
+      "tag_text": "Contact Extracted",
+      "animation_action": "pause",
+      "section_type": "contact",
+      "description": "Bubble moves to contact section and pauses"
+    },
+    {
+      "timeline": 3000,
+      "bubble_position": { "x": 200, "y": 120 },
+      "highlight_area": { "x": 180, "y": 110, "width": 250, "height": 40 },
+      "tag_text": "Contact Extracted",
+      "animation_action": "glow",
+      "section_type": "contact",
+      "description": "Contact section glows with highlight effect"
+    },
+    {
+      "timeline": 3500,
+      "bubble_position": { "x": 200, "y": 120 },
+      "tag_text": "Contact Extracted",
+      "animation_action": "tag_popout",
+      "section_type": "contact",
+      "description": "Contact tag pops out and floats to analysis panel"
+    },
+    {
+      "timeline": 4000,
+      "bubble_position": { "x": 200, "y": 120 },
+      "animation_action": "beam_transfer",
+      "section_type": "contact",
+      "description": "Beam animation transfers contact data"
+    },
+    {
+      "timeline": 4500,
+      "bubble_position": { "x": 150, "y": 200 },
+      "highlight_area": { "x": 130, "y": 190, "width": 300, "height": 60 },
+      "tag_text": "Skills Identified",
+      "animation_action": "pause",
+      "section_type": "skills",
+      "description": "Bubble moves to skills section and pauses"
+    },
+    {
+      "timeline": 5000,
+      "bubble_position": { "x": 150, "y": 200 },
+      "highlight_area": { "x": 130, "y": 190, "width": 300, "height": 60 },
+      "tag_text": "Skills Identified",
+      "animation_action": "glow",
+      "section_type": "skills",
+      "description": "Skills section glows with enhanced highlight"
+    },
+    {
+      "timeline": 5500,
+      "bubble_position": { "x": 150, "y": 200 },
+      "tag_text": "Skills Identified",
+      "animation_action": "tag_popout",
+      "section_type": "skills",
+      "description": "Skills tag pops out and floats to analysis panel"
+    },
+    {
+      "timeline": 6000,
+      "bubble_position": { "x": 150, "y": 200 },
+      "animation_action": "beam_transfer",
+      "section_type": "skills",
+      "description": "Beam animation transfers skills data"
+    },
+    {
+      "timeline": 6500,
+      "bubble_position": { "x": 180, "y": 300 },
+      "highlight_area": { "x": 160, "y": 290, "width": 350, "height": 100 },
+      "tag_text": "Experience Analyzed",
+      "animation_action": "pause",
+      "section_type": "experience",
+      "description": "Bubble moves to experience section and pauses"
+    },
+    {
+      "timeline": 7000,
+      "bubble_position": { "x": 180, "y": 300 },
+      "highlight_area": { "x": 160, "y": 290, "width": 350, "height": 100 },
+      "tag_text": "Experience Analyzed",
+      "animation_action": "glow",
+      "section_type": "experience",
+      "description": "Experience section glows with highlight effect"
+    },
+    {
+      "timeline": 7500,
+      "bubble_position": { "x": 180, "y": 300 },
+      "tag_text": "Experience Analyzed",
+      "animation_action": "tag_popout",
+      "section_type": "experience",
+      "description": "Experience tag pops out and floats to analysis panel"
+    },
+    {
+      "timeline": 8000,
+      "bubble_position": { "x": 180, "y": 300 },
+      "animation_action": "beam_transfer",
+      "section_type": "experience",
+      "description": "Beam animation transfers experience data"
+    },
+    {
+      "timeline": 8500,
+      "bubble_position": { "x": 220, "y": 450 },
+      "highlight_area": { "x": 200, "y": 440, "width": 280, "height": 80 },
+      "tag_text": "Education Verified",
+      "animation_action": "pause",
+      "section_type": "education",
+      "description": "Bubble moves to education section and pauses"
+    },
+    {
+      "timeline": 9000,
+      "bubble_position": { "x": 220, "y": 450 },
+      "highlight_area": { "x": 200, "y": 440, "width": 280, "height": 80 },
+      "tag_text": "Education Verified",
+      "animation_action": "glow",
+      "section_type": "education",
+      "description": "Education section glows with highlight effect"
+    },
+    {
+      "timeline": 9500,
+      "bubble_position": { "x": 220, "y": 450 },
+      "tag_text": "Education Verified",
+      "animation_action": "tag_popout",
+      "section_type": "education",
+      "description": "Education tag pops out and floats to analysis panel"
+    },
+    {
+      "timeline": 10000,
+      "bubble_position": { "x": 220, "y": 450 },
+      "animation_action": "beam_transfer",
+      "section_type": "education",
+      "description": "Beam animation transfers education data"
+    },
+    {
+      "timeline": 10500,
+      "bubble_position": { "x": 300, "y": 250 },
+      "animation_action": "complete",
+      "description": "Animation complete, bubble returns to center"
+    }
+  ],
+  "visual_effects": {
+    "bubble": {
+      "radius": 20,
+      "gradient": {
+        "center_color": "rgba(59, 130, 246, 0.9)",
+        "edge_color": "rgba(59, 130, 246, 0.3)"
+      },
+      "glow": {
+        "color": "rgba(59, 130, 246, 0.5)",
+        "blur": 15
+      },
+      "stroke": {
+        "color": "rgba(255, 255, 255, 0.8)",
+        "width": 2
+      },
+      "scanning_lines": {
+        "radius": 25,
+        "color": "rgba(59, 130, 246, 0.3)",
+        "width": 1
+      }
+    },
+    "highlight": {
+      "fill_color": "rgba(59, 130, 246, 0.2)",
+      "stroke_color": "rgba(59, 130, 246, 0.8)",
+      "stroke_width": 2,
+      "glow": {
+        "color": "rgba(59, 130, 246, 0.5)",
+        "blur": 10
+      }
+    },
+    "beam": {
+      "color": "rgba(59, 130, 246, 0.8)",
+      "width": 3,
+      "dash_pattern": [5, 5],
+      "duration_ms": 500
+    },
+    "tags": {
+      "background": "rgba(59, 130, 246, 1)",
+      "text_color": "white",
+      "border_radius": "full",
+      "padding": "8px 12px",
+      "shadow": "0 4px 6px rgba(0, 0, 0, 0.1)",
+      "animation": "pulse"
+    }
+  },
+  "curved_paths": [
+    {
+      "from": { "x": 120, "y": 80 },
+      "to": { "x": 200, "y": 120 },
+      "curve_offset": 20,
+      "steps": 3
+    },
+    {
+      "from": { "x": 200, "y": 120 },
+      "to": { "x": 150, "y": 200 },
+      "curve_offset": 20,
+      "steps": 3
+    },
+    {
+      "from": { "x": 150, "y": 200 },
+      "to": { "x": 180, "y": 300 },
+      "curve_offset": 20,
+      "steps": 3
+    },
+    {
+      "from": { "x": 180, "y": 300 },
+      "to": { "x": 220, "y": 450 },
+      "curve_offset": 20,
+      "steps": 3
+    }
+  ],
+  "analysis_panel": {
+    "position": { "x": 800, "y": 100 },
+    "width": 300,
+    "height": 400,
+    "background": "rgba(59, 130, 246, 0.1)",
+    "border": "1px solid rgba(59, 130, 246, 0.2)"
+  },
+  "section_types": {
+    "name": {
+      "tag_text": "Name Detected",
+      "color": "rgba(34, 197, 94, 0.8)",
+      "icon": "👤"
+    },
+    "contact": {
+      "tag_text": "Contact Extracted",
+      "color": "rgba(59, 130, 246, 0.8)",
+      "icon": "📧"
+    },
+    "skills": {
+      "tag_text": "Skills Identified",
+      "color": "rgba(245, 158, 11, 0.8)",
+      "icon": "⚡"
+    },
+    "experience": {
+      "tag_text": "Experience Analyzed",
+      "color": "rgba(168, 85, 247, 0.8)",
+      "icon": "💼"
+    },
+    "education": {
+      "tag_text": "Education Verified",
+      "color": "rgba(236, 72, 153, 0.8)",
+      "icon": "🎓"
+    }
+  }
+} 
